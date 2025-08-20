@@ -298,6 +298,8 @@ actor_rollout_ref:
       # Number of GPUs in each FSDP shard group; -1 means auto
       fsdp_size: -1
 
+      # model_dtype: bfloat16
+
       # Only for FSDP1: FSDP1 configuration, prefetch the next forward-pass all-gather
       # before the current forward computation.
       forward_prefetch: False

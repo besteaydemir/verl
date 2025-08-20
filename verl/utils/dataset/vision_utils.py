@@ -34,6 +34,12 @@ def process_image(image: Union[dict, Image.Image]) -> Image.Image:
     if "bytes" in image:
         assert "image" not in image, "Cannot have both `bytes` and `image`"
         image["image"] = BytesIO(image["bytes"])
+    
+    
+    #assert 1==2,  image
+    # print keys if image is a dict
+    # if isinstance(image, dict):
+    #     print("Image keys:", image.keys())
 
     return fetch_image(image)
 
@@ -346,7 +352,7 @@ eg.
 
 
 def process_video(
-    video: dict,
+    video2: dict,
     nframes: Optional[int] = None,
     fps: Optional[float] = None,
     fps_min_frames: Optional[int] = None,
@@ -356,7 +362,8 @@ def process_video(
 
     Add video sample FPS in a future MR
     """
-
+    #assert 1 == 2, f"Expected video to be a dict, got {video}"
+    video = video2["videos"]
     if not isinstance(video, dict) or "video" not in video:
         raise NotImplementedError(VIDEO_FORMAT_HELP)
     assert nframes is None or fps is None, "Can't use both `nframes` or `fps`"

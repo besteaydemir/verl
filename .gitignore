@@ -124,3 +124,9 @@ logs
 log
 outputs
 .history
+
+
+images/
+
+# files ending with .whl
+*.whl

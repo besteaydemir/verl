@@ -14,6 +14,8 @@
 """
 Note that we don't combine the main with ray_trainer as ray_trainer is used by other main.
 """
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 import os
 import socket
@@ -25,10 +27,10 @@ from omegaconf import OmegaConf
 from verl.trainer.ppo.ray_trainer import RayPPOTrainer
 from verl.trainer.ppo.reward import load_reward_manager
 
-
 @hydra.main(config_path="config", config_name="ppo_trainer", version_base=None)
 def main(config):
     run_ppo(config)
+
 
 
 # Define a function to run the PPO-like training process
