@@ -29,6 +29,14 @@ is_cuda_available = torch.cuda.is_available()
 is_npu_available = is_torch_npu_available()
 
 
+def get_visible_devices_keyword() -> str:
+    """Function that gets visible devices keyword name.
+    Returns:
+        'CUDA_VISIBLE_DEVICES' or `ASCEND_RT_VISIBLE_DEVICES`
+    """
+    return "CUDA_VISIBLE_DEVICES" if is_cuda_available else "ASCEND_RT_VISIBLE_DEVICES"
+
+
 def get_device_name() -> str:
     """Function that gets the torch.device based on the current machine.
     This currently only supports CPU, CUDA, NPU.
@@ -76,3 +84,12 @@ def get_nccl_backend() -> str:
         return "hccl"
     else:
         raise RuntimeError(f"No available nccl backend found on device type {get_device_name()}.")
+
+
+def set_expandable_segments(enable: bool) -> None:
+    """Enable or disable expandable segments for cuda.
+    Args:
+        enable (bool): Whether to enable expandable segments. Used to avoid OOM.
+    """
+    if is_cuda_available:
+        torch.cuda.memory._set_allocator_settings(f"expandable_segments:{enable}")
