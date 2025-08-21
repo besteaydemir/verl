@@ -229,11 +229,11 @@ class RLHFDataset(Dataset):
             )
             multi_modal_data = {}
 
-                images = None
-                # assert 1 == 2, row_dict
-                if self.image_key in row_dict:
-                    images = [process_image(image) for image in row_dict.pop(self.image_key)]
-                    multi_modal_data["image"] = images
+            images = None
+            # assert 1 == 2, row_dict
+            if self.image_key in row_dict:
+                images = [process_image(image) for image in row_dict.pop(self.image_key)]
+                multi_modal_data["image"] = images
             images = None
             if self.image_key in row_dict and row_dict.get(self.image_key, None) is not None:
                 images = [process_image(image) for image in row_dict.pop(self.image_key)]
