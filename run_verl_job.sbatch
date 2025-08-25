@@ -1,12 +1,15 @@
 #!/bin/bash
-#SBATCH --partition=mcml-dgx-a100-40x8,mcml-hgx-a100-80x4,mcml-hgx-a100-80x4-mig,mcml-hgx-h100-94x4
+#SBATCH --partition=mcml-hgx-a100-80x4
 #SBATCH --cpus-per-task=8
 #SBATCH --qos=mcml
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:2
 #SBATCH --time=1:35:10
 #SBATCH --job-name=verl_init_training
 
+# #SBATCH --partition=mcml-dgx-a100-40x8,mcml-hgx-a100-80x4,mcml-hgx-a100-80x4-mig,mcml-hgx-h100-94x4
 
+# cd /dss/dssmcmlfs01/pn34sa/pn34sa-dss-0000/aydemir
+# python -c "from transformers import Qwen2_5_VLForConditionalGeneration, AutoTokenizer, AutoProcessor; model='Qwen/Qwen2.5-VL-3B-Instruct'; AutoProcessor.from_pretrained(model, cache_dir='.' ); Qwen2_5_VLForConditionalGeneration.from_pretrained(model, cache_dir='.', trust_remote_code=True)"
 
 LOG_DIR="logs/$(date +%Y-%m-%d)"
 mkdir -p "$LOG_DIR"
@@ -27,6 +30,11 @@ set -x
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate verl
 
+# du -h --max-depth=1 ~ | sort -hr | head -n 1
+# python -c "from transformers import Qwen2_5_VLForConditionalGeneration; print(Qwen2_5_VLForConditionalGeneration)"
+# pip install git+https://github.com/huggingface/transformers.git
+# python -c "from transformers import Qwen2_5_VLForConditionalGeneration; print(Qwen2_5_VLForConditionalGeneration)"
+# python -c "import vllm, transformers; print('vllm:', vllm.__file__, '\ntransformers:', transformers.__file__)"
 
 {
     echo "========== SYSTEM INFO =========="
@@ -84,7 +92,7 @@ HYDRA_FULL_ERROR=1 python3 -m verl.trainer.main_ppo \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
     data.image_key=images \
-    actor_rollout_ref.model.path=Qwen/Qwen2.5-VL-3B-Instruct \
+    actor_rollout_ref.model.path=/dss/dssmcmlfs01/pn34sa/pn34sa-dss-0000/aydemir/models--Qwen--Qwen2.5-VL-3B-Instruct/snapshots/66285546d2b821cf421d4f5eb2576359d3770cd3 \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.ppo_mini_batch_size=1 \
@@ -112,16 +120,19 @@ HYDRA_FULL_ERROR=1 python3 -m verl.trainer.main_ppo \
     trainer.logger=['console','wandb'] \
     trainer.project_name='verl_grpo_example_geo3k' \
     trainer.experiment_name='qwen2_5_vl_3b_function_rm' \
-    trainer.n_gpus_per_node=4 \
+    trainer.n_gpus_per_node=2 \
     trainer.nnodes=1 \
     trainer.save_freq=20 \
     trainer.test_freq=5 \
-    trainer.total_epochs=1 "$@" 
+    ray_kwargs.ray_init.num_cpus=8 \
+    trainer.total_epochs=1 "$@"
 
 
 # +actor_rollout_ref.model.dtype=half \
 # +actor_rollout_ref.model.torch_dtype=float16   
-# +actor_rollout_ref.rollout.engine_kwargs.vllm.dtype=half    
-#     actor_rollout_ref.rollout.engine_kwargs.vllm.disable_mm_preprocessor_cache=True \
-#     ray_init.num_cpus=8 \
+# +actor_rollout_ref.rollout.engine_kwargs.vllm.dtype=half  
+# actor_rollout_ref.rollout.engine_kwargs.vllm.disable_mm_preprocessor_cache=True \
+      
+
+
 

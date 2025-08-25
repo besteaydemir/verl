@@ -6,7 +6,7 @@ from verl.utils.hdfs_io import copy, makedirs
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--local_dir", default="/home/stud/aydemir/data/docvideo")
+    parser.add_argument("--local_dir", default="/dss/dsshome1/06/di38riq")
     parser.add_argument("--hdfs_dir", default=None)
     args = parser.parse_args()
 
@@ -20,9 +20,9 @@ if __name__ == "__main__":
 
     # ✅ Absolute paths for your 3 available videos
     video_paths = [
-        "/home/stud/aydemir/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_1.mp4",
-        "/home/stud/aydemir/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_2.mp4",
-        "/home/stud/aydemir/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_3.mp4",
+        "/dss/dsshome1/06/di38riq/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_1.mp4",
+        "/dss/dsshome1/06/di38riq/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_2.mp4",
+        "/dss/dsshome1/06/di38riq/.cache/huggingface/hub/datasets--datasets-examples--doc-video-1/snapshots/90da02ce45335043e8d56c1a42dc36fb19c8cf7a/--5iwqOe8G8_scene_3.mp4",
     ]
 
     # ✅ Create 100 examples by repeating and assigning video paths
